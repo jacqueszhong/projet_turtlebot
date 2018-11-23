@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+
+<robot name="indoor">
+  <link name="indoor_world">
+    <inertial>
+      <origin
+        xyz="-0.4207 2.1495 1.1"
+        rpy="0 0 0" />
+      <mass
+        value="31680" />
+      <inertia
+        ixx="150369.009914063"
+        ixy="-3.61013302585547E-13"
+        ixz="2178.15275390624"
+        iyy="2.75065058530636E-11"
+        iyz="-289596.277587892"
+        izz="1.56000275379575E-11" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="1.5707963267949 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://minilab_navigation/meshes/indoor_world.STL" />
+      </geometry>
+      <material
+        name="Grey">
+        <color
+          rgba="0.69804 0.69804 0.69804 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="1.5707963267949 0 0" />
+      <geometry>
+        <mesh
+          filename="package://minilab_navigation/meshes/indoor_world.STL" />
+      </geometry>
+    </collision>
+  </link>
+</robot>

@@ -1,0 +1,1257 @@
+<?xml version='1.0'?>
+<sdf version='1.4'>
+  <world name='Willow'>
+    <light name='sun' type='directional'>
+      <cast_shadows>1</cast_shadows>
+      <pose>0 0 10 0 -0 0</pose>
+      <diffuse>0.8 0.8 0.8 1</diffuse>
+      <specular>0.2 0.2 0.2 1</specular>
+      <attenuation>
+        <range>1000</range>
+        <constant>0.9</constant>
+        <linear>0.01</linear>
+        <quadratic>0.001</quadratic>
+      </attenuation>
+      <direction>-0.5 0.1 -0.9</direction>
+    </light>
+    <model name='ground_plane'>
+      <static>1</static>
+      <link name='link'>
+        <collision name='collision'>
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>100 100</size>
+            </plane>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>100</mu>
+                <mu2>50</mu2>
+              </ode>
+            </friction>
+            <bounce/>
+            <contact>
+              <ode/>
+            </contact>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <visual name='visual'>
+          <cast_shadows>0</cast_shadows>
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>100 100</size>
+            </plane>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Grey</name>
+            </script>
+          </material>
+        </visual>
+        <velocity_decay>
+          <linear>0</linear>
+          <angular>0</angular>
+        </velocity_decay>
+        <self_collide>0</self_collide>
+        <kinematic>0</kinematic>
+        <gravity>1</gravity>
+      </link>
+    </model>
+    <physics type='ode'>
+      <max_step_size>0.001</max_step_size>
+      <real_time_factor>1</real_time_factor>
+      <real_time_update_rate>1000</real_time_update_rate>
+      <gravity>0 0 -9.8</gravity>
+    </physics>
+    <scene>
+      <ambient>0.4 0.4 0.4 1</ambient>
+      <background>0.7 0.7 0.7 1</background>
+      <shadows>1</shadows>
+    </scene>
+    <spherical_coordinates>
+      <surface_model>EARTH_WGS84</surface_model>
+      <latitude_deg>0</latitude_deg>
+      <longitude_deg>0</longitude_deg>
+      <elevation>0</elevation>
+      <heading_deg>0</heading_deg>
+    </spherical_coordinates>
+    <model name='minilab'>
+      <link name='base_footprint'>
+        <pose>0 0 0 0 -0 0</pose>
+        <inertial>
+          <pose>0 0 0.035 0 -0 0</pose>
+          <mass>10</mass>
+          <inertia>
+            <ixx>1</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>1</iyy>
+            <iyz>0</iyz>
+            <izz>1</izz>
+          </inertia>
+        </inertial>
+        <collision name='base_footprint_collision'>
+          <pose>0 0 0 0 -0 0</pose>
+          <geometry>
+            <box>
+              <size>0.7 0.7 0</size>
+            </box>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <bounce/>
+            <friction>
+              <ode/>
+            </friction>
+            <contact>
+              <ode/>
+            </contact>
+          </surface>
+        </collision>
+        <collision name='base_footprint_collision_base_link'>
+          <pose>0 0 35.035 0 -0 0</pose>
+          <geometry>
+            <box>
+              <size>0.7 0.7 0.08</size>
+            </box>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <bounce/>
+            <friction>
+              <ode/>
+            </friction>
+            <contact>
+              <ode/>
+            </contact>
+          </surface>
+        </collision>
+        <collision name='base_footprint_collision_base_link_wheel_left_1'>
+          <pose>0.17 -0.27 0.025 1.57 5.55112e-17 -1.57</pose>
+          <geometry>
+            <box>
+              <size>0.1 0.1 0.1</size>
+            </box>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode>
+                <mu>0</mu>
+                <mu2>0</mu2>
+              </ode>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <collision name='base_footprint_collision_base_link_wheel_left_2'>
+          <pose>0.185 -0.27 0.005 1.57 5.55112e-17 -1.57</pose>
+          <geometry>
+            <box>
+              <size>0.1 0.1 0.1</size>
+            </box>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode>
+                <mu>0</mu>
+                <mu2>0</mu2>
+              </ode>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <collision name='base_footprint_collision_base_link_wheel_right_1'>
+          <pose>0.17 0.3 0.025 1.57 5.55112e-17 -1.57</pose>
+          <geometry>
+            <box>
+              <size>0.1 0.1 0.1</size>
+            </box>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode>
+                <mu>0</mu>
+                <mu2>0</mu2>
+              </ode>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <collision name='base_footprint_collision_base_link_wheel_right_2'>
+          <pose>0.185 0.3 0.005 1.57 5.55112e-17 -1.57</pose>
+          <geometry>
+            <box>
+              <size>0.1 0.1 0.1</size>
+            </box>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode>
+                <mu>0</mu>
+                <mu2>0</mu2>
+              </ode>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <collision name='base_footprint_collision_capot_arriere'>
+          <pose>-0.29 0.26 0.075 1.57 -0 0</pose>
+          <geometry>
+            <box>
+              <size>0.1 0.1 0.1</size>
+            </box>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode>
+                <mu>0</mu>
+                <mu2>0</mu2>
+              </ode>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <collision name='base_footprint_collision_capot_batterie'>
+          <pose>-0.29 -0.268 0.035 1.57 -5.55112e-17 1.57</pose>
+          <geometry>
+            <box>
+              <size>0.1 0.1 0.1</size>
+            </box>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode>
+                <mu>0</mu>
+                <mu2>0</mu2>
+              </ode>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <collision name='base_footprint_collision_capteur_IR1'>
+          <pose>0.17 0.235 0.065 -1.57 -0 -0.9</pose>
+          <geometry>
+            <box>
+              <size>0.1 0.1 0.1</size>
+            </box>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode>
+                <mu>0</mu>
+                <mu2>0</mu2>
+              </ode>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <collision name='base_footprint_collision_capteur_IR2'>
+          <pose>0.238 0.15 0.065 -1.57 -0 -1.3</pose>
+          <geometry>
+            <box>
+              <size>0.1 0.1 0.1</size>
+            </box>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode>
+                <mu>0</mu>
+                <mu2>0</mu2>
+              </ode>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <collision name='base_footprint_collision_capteur_IR3'>
+          <pose>0.27 0.03 0.065 -1.57 -5.55112e-17 -1.57</pose>
+          <geometry>
+            <box>
+              <size>0.1 0.1 0.1</size>
+            </box>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode>
+                <mu>0</mu>
+                <mu2>0</mu2>
+              </ode>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <collision name='base_footprint_collision_capteur_IR4'>
+          <pose>0.262 -0.09 0.065 -1.57 5.55112e-17 -1.9</pose>
+          <geometry>
+            <box>
+              <size>0.1 0.1 0.1</size>
+            </box>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode>
+                <mu>0</mu>
+                <mu2>0</mu2>
+              </ode>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <collision name='base_footprint_collision_capteur_IR5'>
+          <pose>0.22 -0.18 0.065 -1.57 -5.55112e-17 -2.2</pose>
+          <geometry>
+            <box>
+              <size>0.1 0.1 0.1</size>
+            </box>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode>
+                <mu>0</mu>
+                <mu2>0</mu2>
+              </ode>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <collision name='base_footprint_collision_capteur_US1'>
+          <pose>0.22 0.217 0.128 -1.57 -0 -0.9</pose>
+          <geometry>
+            <box>
+              <size>0.1 0.1 0.1</size>
+            </box>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode>
+                <mu>0</mu>
+                <mu2>0</mu2>
+              </ode>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <collision name='base_footprint_collision_capteur_US2'>
+          <pose>0.27 0.13 0.128 -1.57 -0 -1.3</pose>
+          <geometry>
+            <box>
+              <size>0.1 0.1 0.1</size>
+            </box>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode>
+                <mu>0</mu>
+                <mu2>0</mu2>
+              </ode>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <collision name='base_footprint_collision_capteur_US3'>
+          <pose>0.29 0.01 0.128 -1.57 -5.55112e-17 -1.57</pose>
+          <geometry>
+            <box>
+              <size>0.1 0.1 0.1</size>
+            </box>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode>
+                <mu>0</mu>
+                <mu2>0</mu2>
+              </ode>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <collision name='base_footprint_collision_capteur_US4'>
+          <pose>0.28 -0.115 0.129 -1.57 5.55112e-17 -1.9</pose>
+          <geometry>
+            <box>
+              <size>0.1 0.1 0.1</size>
+            </box>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode>
+                <mu>0</mu>
+                <mu2>0</mu2>
+              </ode>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <collision name='base_footprint_collision_capteur_US5'>
+          <pose>0.22 -0.205 0.129 -1.57 -5.55112e-17 -2.2</pose>
+          <geometry>
+            <box>
+              <size>0.1 0.1 0.1</size>
+            </box>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode>
+                <mu>0</mu>
+                <mu2>0</mu2>
+              </ode>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <collision name='base_footprint_collision_coque'>
+          <pose>-0.28 0.26 0.135 1.57 -0 0</pose>
+          <geometry>
+            <box>
+              <size>0.1 0.1 0.1</size>
+            </box>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode>
+                <mu>0</mu>
+                <mu2>0</mu2>
+              </ode>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <collision name='base_footprint_collision_hokuyo_link'>
+          <pose>0.2 0.03 0.235 3.14 -0 0</pose>
+          <geometry>
+            <box>
+              <size>0.1 0.1 0.1</size>
+            </box>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode/>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <collision name='base_footprint_collision_openni_camera'>
+          <pose>0.15 0 0.235 0 -0 0</pose>
+          <geometry>
+            <box>
+              <size>0.1 0.1 0.1</size>
+            </box>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode/>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <collision name='base_footprint_collision_roue-auto-directrice'>
+          <pose>-0.29 0 0.01 1.57 -0 0</pose>
+          <geometry>
+            <box>
+              <size>0.1 0.1 0.1</size>
+            </box>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <bounce/>
+            <friction>
+              <ode/>
+            </friction>
+            <contact>
+              <ode/>
+            </contact>
+          </surface>
+        </collision>
+        <collision name='base_footprint_collision_support_capteur'>
+          <pose>0.185 0.26 0.035 1.57 -0 0</pose>
+          <geometry>
+            <box>
+              <size>0.1 0.1 0.1</size>
+            </box>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode>
+                <mu>0</mu>
+                <mu2>0</mu2>
+              </ode>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <visual name='base_footprint_visual_base_link'>
+          <pose>-0.29 0.26 0.035 1.57 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>0.0016 0.0016 0.0016</scale>
+              <uri>/home/dgnr/catkin_ws/src/minilab/minilab_navigation/meshes/MINILABSTL/embase_dessous.STL</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <visual name='base_footprint_visual_base_link_wheel_left_1'>
+          <pose>0.17 -0.27 0.025 1.57 5.55112e-17 -1.57</pose>
+          <geometry>
+            <mesh>
+              <scale>0.0016 0.0016 0.0016</scale>
+              <uri>/home/dgnr/catkin_ws/src/minilab/minilab_navigation/meshes/MINILABSTL/banebots_wheel_T80P-494BO-HS6.STL</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/Black</name>
+              <uri>__default__</uri>
+            </script>
+          </material>
+        </visual>
+        <visual name='base_footprint_visual_base_link_wheel_left_2'>
+          <pose>0.185 -0.27 0.005 1.57 5.55112e-17 -1.57</pose>
+          <geometry>
+            <mesh>
+              <scale>0.0016 0.0016 0.0016</scale>
+              <uri>/home/dgnr/catkin_ws/src/minilab/minilab_navigation/meshes/MINILABSTL/banebots_wheel_T80P-494BO-HS6orange.STL</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/Orange</name>
+              <uri>__default__</uri>
+            </script>
+          </material>
+        </visual>
+        <visual name='base_footprint_visual_base_link_wheel_right_1'>
+          <pose>0.17 0.3 0.025 1.57 5.55112e-17 -1.57</pose>
+          <geometry>
+            <mesh>
+              <scale>0.0016 0.0016 0.0016</scale>
+              <uri>/home/dgnr/catkin_ws/src/minilab/minilab_navigation/meshes/MINILABSTL/banebots_wheel_T80P-494BO-HS6.STL</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/Black</name>
+              <uri>__default__</uri>
+            </script>
+          </material>
+        </visual>
+        <visual name='base_footprint_visual_base_link_wheel_right_2'>
+          <pose>0.185 0.3 0.005 1.57 5.55112e-17 -1.57</pose>
+          <geometry>
+            <mesh>
+              <scale>0.0016 0.0016 0.0016</scale>
+              <uri>/home/dgnr/catkin_ws/src/minilab/minilab_navigation/meshes/MINILABSTL/banebots_wheel_T80P-494BO-HS6orange.STL</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/Orange</name>
+              <uri>__default__</uri>
+            </script>
+          </material>
+        </visual>
+        <visual name='base_footprint_visual_capot_arriere'>
+          <pose>-0.29 0.26 0.075 1.57 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>0.0016 0.0016 0.0016</scale>
+              <uri>/home/dgnr/catkin_ws/src/minilab/minilab_navigation/meshes/MINILABSTL/capot_arriere.STL</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/Grey</name>
+              <uri>__default__</uri>
+            </script>
+          </material>
+        </visual>
+        <visual name='base_footprint_visual_capot_batterie'>
+          <pose>-0.29 -0.268 0.035 1.57 -5.55112e-17 1.57</pose>
+          <geometry>
+            <mesh>
+              <scale>0.0016 0.0016 0.0016</scale>
+              <uri>/home/dgnr/catkin_ws/src/minilab/minilab_navigation/meshes/MINILABSTL/embase_capot_batterie.STL</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/Grey</name>
+              <uri>__default__</uri>
+            </script>
+          </material>
+        </visual>
+        <visual name='base_footprint_visual_capteur_IR1'>
+          <pose>0.17 0.235 0.065 -1.57 -0 -0.9</pose>
+          <geometry>
+            <mesh>
+              <scale>0.0016 0.0016 0.0016</scale>
+              <uri>/home/dgnr/catkin_ws/src/minilab/minilab_navigation/meshes/MINILABSTL/Telemetre-IR-GP2Y0A21YK0F.STL</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/Black</name>
+              <uri>__default__</uri>
+            </script>
+          </material>
+        </visual>
+        <visual name='base_footprint_visual_capteur_IR2'>
+          <pose>0.238 0.15 0.065 -1.57 -0 -1.3</pose>
+          <geometry>
+            <mesh>
+              <scale>0.0016 0.0016 0.0016</scale>
+              <uri>/home/dgnr/catkin_ws/src/minilab/minilab_navigation/meshes/MINILABSTL/Telemetre-IR-GP2Y0A21YK0F.STL</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/Black</name>
+              <uri>__default__</uri>
+            </script>
+          </material>
+        </visual>
+        <visual name='base_footprint_visual_capteur_IR3'>
+          <pose>0.27 0.03 0.065 -1.57 -5.55112e-17 -1.57</pose>
+          <geometry>
+            <mesh>
+              <scale>0.0016 0.0016 0.0016</scale>
+              <uri>/home/dgnr/catkin_ws/src/minilab/minilab_navigation/meshes/MINILABSTL/Telemetre-IR-GP2Y0A21YK0F.STL</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/Black</name>
+              <uri>__default__</uri>
+            </script>
+          </material>
+        </visual>
+        <visual name='base_footprint_visual_capteur_IR4'>
+          <pose>0.262 -0.09 0.065 -1.57 5.55112e-17 -1.9</pose>
+          <geometry>
+            <mesh>
+              <scale>0.0016 0.0016 0.0016</scale>
+              <uri>/home/dgnr/catkin_ws/src/minilab/minilab_navigation/meshes/MINILABSTL/Telemetre-IR-GP2Y0A21YK0F.STL</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/Black</name>
+              <uri>__default__</uri>
+            </script>
+          </material>
+        </visual>
+        <visual name='base_footprint_visual_capteur_IR5'>
+          <pose>0.22 -0.18 0.065 -1.57 -5.55112e-17 -2.2</pose>
+          <geometry>
+            <mesh>
+              <scale>0.0016 0.0016 0.0016</scale>
+              <uri>/home/dgnr/catkin_ws/src/minilab/minilab_navigation/meshes/MINILABSTL/Telemetre-IR-GP2Y0A21YK0F.STL</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/Black</name>
+              <uri>__default__</uri>
+            </script>
+          </material>
+        </visual>
+        <visual name='base_footprint_visual_capteur_US1'>
+          <pose>0.22 0.217 0.128 -1.57 -0 -0.9</pose>
+          <geometry>
+            <mesh>
+              <scale>0.0016 0.0016 0.0016</scale>
+              <uri>/home/dgnr/catkin_ws/src/minilab/minilab_navigation/meshes/MINILABSTL/US_sensor_SFR02.STL</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/Black</name>
+              <uri>__default__</uri>
+            </script>
+          </material>
+        </visual>
+        <visual name='base_footprint_visual_capteur_US2'>
+          <pose>0.27 0.13 0.128 -1.57 -0 -1.3</pose>
+          <geometry>
+            <mesh>
+              <scale>0.0016 0.0016 0.0016</scale>
+              <uri>/home/dgnr/catkin_ws/src/minilab/minilab_navigation/meshes/MINILABSTL/US_sensor_SFR02.STL</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/Black</name>
+              <uri>__default__</uri>
+            </script>
+          </material>
+        </visual>
+        <visual name='base_footprint_visual_capteur_US3'>
+          <pose>0.29 0.01 0.128 -1.57 -5.55112e-17 -1.57</pose>
+          <geometry>
+            <mesh>
+              <scale>0.0016 0.0016 0.0016</scale>
+              <uri>/home/dgnr/catkin_ws/src/minilab/minilab_navigation/meshes/MINILABSTL/US_sensor_SFR02.STL</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/Black</name>
+              <uri>__default__</uri>
+            </script>
+          </material>
+        </visual>
+        <visual name='base_footprint_visual_capteur_US4'>
+          <pose>0.28 -0.115 0.129 -1.57 5.55112e-17 -1.9</pose>
+          <geometry>
+            <mesh>
+              <scale>0.0016 0.0016 0.0016</scale>
+              <uri>/home/dgnr/catkin_ws/src/minilab/minilab_navigation/meshes/MINILABSTL/US_sensor_SFR02.STL</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/Black</name>
+              <uri>__default__</uri>
+            </script>
+          </material>
+        </visual>
+        <visual name='base_footprint_visual_capteur_US5'>
+          <pose>0.22 -0.205 0.129 -1.57 -5.55112e-17 -2.2</pose>
+          <geometry>
+            <mesh>
+              <scale>0.0016 0.0016 0.0016</scale>
+              <uri>/home/dgnr/catkin_ws/src/minilab/minilab_navigation/meshes/MINILABSTL/US_sensor_SFR02.STL</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/Black</name>
+              <uri>__default__</uri>
+            </script>
+          </material>
+        </visual>
+        <visual name='base_footprint_visual_coque'>
+          <pose>-0.28 0.26 0.135 1.57 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>0.0016 0.0016 0.0016</scale>
+              <uri>/home/dgnr/catkin_ws/src/minilab/minilab_navigation/meshes/MINILABSTL/coque_moule.STL</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/Black</name>
+              <uri>__default__</uri>
+            </script>
+          </material>
+        </visual>
+        <visual name='base_footprint_visual_hokuyo_link'>
+          <pose>0.1 0.0298407 0.135 1.57 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>0.0016 0.0016 0.0016</scale>
+              <uri>/home/dgnr/catkin_ws/src/minilab/minilab_navigation/meshes/MINILABSTL/Laser-hokuyo_URG-04LX.STL</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <visual name='base_footprint_visual_openni_camera'>
+          <pose>-0.2 -0.15 0.235 1.57 -5.55112e-17 1.57</pose>
+          <geometry>
+            <mesh>
+              <scale>0.0016 0.0016 0.0016</scale>
+              <uri>/home/dgnr/catkin_ws/src/minilab/minilab_navigation/meshes/MINILABSTL/Kinect - Asus-Xtion-capteur-1.STL</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <visual name='base_footprint_visual_roue-auto-directrice'>
+          <pose>-0.29 0 0.01 1.57 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>0.0016 0.0016 0.0016</scale>
+              <uri>/home/dgnr/catkin_ws/src/minilab/minilab_navigation/meshes/MINILABSTL/roue-auto-directrice-Guitel_42-32.STL</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <visual name='base_footprint_visual_support_capteur'>
+          <pose>0.185 0.26 0.035 1.57 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>0.0016 0.0016 0.0016</scale>
+              <uri>/home/dgnr/catkin_ws/src/minilab/minilab_navigation/meshes/MINILABSTL/support_telemetrie.STL</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/Grey</name>
+              <uri>__default__</uri>
+            </script>
+          </material>
+        </visual>
+        <velocity_decay>
+          <linear>0</linear>
+          <angular>0</angular>
+        </velocity_decay>
+        <velocity_decay>
+          <linear>0</linear>
+          <angular>0</angular>
+        </velocity_decay>
+        <velocity_decay>
+          <linear>0</linear>
+          <angular>0</angular>
+        </velocity_decay>
+        <velocity_decay>
+          <linear>0</linear>
+          <angular>0</angular>
+        </velocity_decay>
+        <velocity_decay>
+          <linear>0</linear>
+          <angular>0</angular>
+        </velocity_decay>
+        <velocity_decay>
+          <linear>0</linear>
+          <angular>0</angular>
+        </velocity_decay>
+        <velocity_decay>
+          <linear>0</linear>
+          <angular>0</angular>
+        </velocity_decay>
+        <velocity_decay>
+          <linear>0</linear>
+          <angular>0</angular>
+        </velocity_decay>
+        <sensor name='IR1' type='ray'>
+          <visualize>1</visualize>
+          <update_rate>40</update_rate>
+          <ray>
+            <scan>
+              <horizontal>
+                <samples>10</samples>
+                <resolution>1</resolution>
+                <min_angle>-0.01</min_angle>
+                <max_angle>0.01</max_angle>
+              </horizontal>
+            </scan>
+            <range>
+              <min>0.01</min>
+              <max>0.6</max>
+              <resolution>0.01</resolution>
+            </range>
+          </ray>
+          <plugin name='ros_IR_controller' filename='libgazebo_ros_laser.so'>
+            <topicName>IR1</topicName>
+            <frameName>capteur_IR1_plugin</frameName>
+            <robotNamespace>/</robotNamespace>
+          </plugin>
+          <pose>0.357749 0.320158 0.0601593 -0.000795693 -0.000796327 0.67</pose>
+        </sensor>
+        <velocity_decay>
+          <linear>0</linear>
+          <angular>0</angular>
+        </velocity_decay>
+        <velocity_decay>
+          <linear>0</linear>
+          <angular>0</angular>
+        </velocity_decay>
+        <sensor name='IR2' type='ray'>
+          <visualize>1</visualize>
+          <update_rate>40</update_rate>
+          <ray>
+            <scan>
+              <horizontal>
+                <samples>10</samples>
+                <resolution>1</resolution>
+                <min_angle>-0.01</min_angle>
+                <max_angle>0.01</max_angle>
+              </horizontal>
+            </scan>
+            <range>
+              <min>0.01</min>
+              <max>0.6</max>
+              <resolution>0.01</resolution>
+            </range>
+          </ray>
+          <plugin name='ros_IR_controller' filename='libgazebo_ros_laser.so'>
+            <topicName>IR2</topicName>
+            <frameName>capteur_IR2_plugin</frameName>
+            <robotNamespace>/</robotNamespace>
+          </plugin>
+          <pose>0.44409 0.155323 0.0601593 -0.000795693 -0.000796327 0.27</pose>
+        </sensor>
+        <velocity_decay>
+          <linear>0</linear>
+          <angular>0</angular>
+        </velocity_decay>
+        <velocity_decay>
+          <linear>0</linear>
+          <angular>0</angular>
+        </velocity_decay>
+        <sensor name='IR3' type='ray'>
+          <visualize>1</visualize>
+          <update_rate>40</update_rate>
+          <ray>
+            <scan>
+              <horizontal>
+                <samples>10</samples>
+                <resolution>1</resolution>
+                <min_angle>-0.01</min_angle>
+                <max_angle>0.01</max_angle>
+              </horizontal>
+            </scan>
+            <range>
+              <min>0.01</min>
+              <max>0.6</max>
+              <resolution>0.01</resolution>
+            </range>
+          </ray>
+          <plugin name='ros_IR_controller' filename='libgazebo_ros_laser.so'>
+            <topicName>IR3</topicName>
+            <frameName>capteur_IR3_plugin</frameName>
+            <robotNamespace>/</robotNamespace>
+          </plugin>
+          <pose>0.470044 -0.0198407 0.0601593 -0.000795693 -0.000796327 -2.5249e-10</pose>
+        </sensor>
+        <velocity_decay>
+          <linear>0</linear>
+          <angular>0</angular>
+        </velocity_decay>
+        <velocity_decay>
+          <linear>0</linear>
+          <angular>0</angular>
+        </velocity_decay>
+        <sensor name='IR4' type='ray'>
+          <visualize>1</visualize>
+          <update_rate>40</update_rate>
+          <ray>
+            <scan>
+              <horizontal>
+                <samples>10</samples>
+                <resolution>1</resolution>
+                <min_angle>-0.01</min_angle>
+                <max_angle>0.01</max_angle>
+              </horizontal>
+            </scan>
+            <range>
+              <min>0.01</min>
+              <max>0.6</max>
+              <resolution>0.01</resolution>
+            </range>
+          </ray>
+          <plugin name='ros_IR_controller' filename='libgazebo_ros_laser.so'>
+            <topicName>IR4</topicName>
+            <frameName>capteur_IR4_plugin</frameName>
+            <robotNamespace>/</robotNamespace>
+          </plugin>
+          <pose>0.435099 -0.201974 0.0601593 -0.000795693 -0.000796327 -0.33</pose>
+        </sensor>
+        <velocity_decay>
+          <linear>0</linear>
+          <angular>0</angular>
+        </velocity_decay>
+        <velocity_decay>
+          <linear>0</linear>
+          <angular>0</angular>
+        </velocity_decay>
+        <sensor name='IR5' type='ray'>
+          <visualize>1</visualize>
+          <update_rate>40</update_rate>
+          <ray>
+            <scan>
+              <horizontal>
+                <samples>10</samples>
+                <resolution>1</resolution>
+                <min_angle>-0.01</min_angle>
+                <max_angle>0.01</max_angle>
+              </horizontal>
+            </scan>
+            <range>
+              <min>0.01</min>
+              <max>0.6</max>
+              <resolution>0.01</resolution>
+            </range>
+          </ray>
+          <plugin name='ros_IR_controller' filename='libgazebo_ros_laser.so'>
+            <topicName>IR5</topicName>
+            <frameName>capteur_IR5_plugin</frameName>
+            <robotNamespace>/</robotNamespace>
+          </plugin>
+          <pose>0.352277 -0.338127 0.0601593 -0.000795693 -0.000796327 -0.63</pose>
+        </sensor>
+        <velocity_decay>
+          <linear>0</linear>
+          <angular>0</angular>
+        </velocity_decay>
+        <velocity_decay>
+          <linear>0</linear>
+          <angular>0</angular>
+        </velocity_decay>
+        <velocity_decay>
+          <linear>0</linear>
+          <angular>0</angular>
+        </velocity_decay>
+        <velocity_decay>
+          <linear>0</linear>
+          <angular>0</angular>
+        </velocity_decay>
+        <velocity_decay>
+          <linear>0</linear>
+          <angular>0</angular>
+        </velocity_decay>
+        <velocity_decay>
+          <linear>0</linear>
+          <angular>0</angular>
+        </velocity_decay>
+        <velocity_decay>
+          <linear>0</linear>
+          <angular>0</angular>
+        </velocity_decay>
+        <sensor name='laser' type='ray'>
+          <visualize>1</visualize>
+          <update_rate>40</update_rate>
+          <ray>
+            <scan>
+              <horizontal>
+                <samples>720</samples>
+                <resolution>1</resolution>
+                <min_angle>-1.57</min_angle>
+                <max_angle>1.57</max_angle>
+              </horizontal>
+            </scan>
+            <range>
+              <min>0.1</min>
+              <max>15</max>
+              <resolution>0.01</resolution>
+            </range>
+          </ray>
+          <plugin name='ros_hokuyo_controller' filename='libgazebo_ros_laser.so'>
+            <topicName>scan</topicName>
+            <frameName>hokuyo_link</frameName>
+            <robotNamespace>/</robotNamespace>
+          </plugin>
+          <pose>0.2 0.03 0.235 3.14 -0 0</pose>
+        </sensor>
+        <velocity_decay>
+          <linear>0</linear>
+          <angular>0</angular>
+        </velocity_decay>
+        <sensor name='openni_camera_camera' type='depth'>
+          <always_on>1</always_on>
+          <visualize>1</visualize>
+          <camera name='__default__'>
+            <horizontal_fov>1.047</horizontal_fov>
+            <image>
+              <width>640</width>
+              <height>480</height>
+              <format>R8G8B8</format>
+            </image>
+            <depth_camera>
+              <output>depths</output>
+            </depth_camera>
+            <clip>
+              <near>0.1</near>
+              <far>100</far>
+            </clip>
+          </camera>
+          <plugin name='camera_controller' filename='libgazebo_ros_openni_kinect.so'>
+            <alwaysOn>true</alwaysOn>
+            <updateRate>10.0</updateRate>
+            <cameraName>camera</cameraName>
+            <frameName>openni_camera</frameName>
+            <imageTopicName>rgb/image_raw</imageTopicName>
+            <depthImageTopicName>depth/image_raw</depthImageTopicName>
+            <pointCloudTopicName>depth/points</pointCloudTopicName>
+            <cameraInfoTopicName>rgb/camera_info</cameraInfoTopicName>
+            <depthImageCameraInfoTopicName>depth/camera_info</depthImageCameraInfoTopicName>
+            <pointCloudCutoff>0.4</pointCloudCutoff>
+            <hackBaseline>0.07</hackBaseline>
+            <distortionK1>0.0</distortionK1>
+            <distortionK2>0.0</distortionK2>
+            <distortionK3>0.0</distortionK3>
+            <distortionT1>0.0</distortionT1>
+            <distortionT2>0.0</distortionT2>
+            <CxPrime>0.0</CxPrime>
+            <Cx>0.0</Cx>
+            <Cy>0.0</Cy>
+            <focalLength>0.0</focalLength>
+            <robotNamespace>/</robotNamespace>
+          </plugin>
+          <pose>0.15 0 0.235 0 -0 0</pose>
+        </sensor>
+        <gravity>1</gravity>
+        <velocity_decay>
+          <linear>0</linear>
+          <angular>0</angular>
+        </velocity_decay>
+        <self_collide>0</self_collide>
+        <kinematic>0</kinematic>
+      </link>
+      <static>0</static>
+      <plugin name='object_controller' filename='libgazebo_ros_planar_move.so'>
+        <commandTopic>cmd_vel</commandTopic>
+        <odometryTopic>odom</odometryTopic>
+        <odometryFrame>odom</odometryFrame>
+        <odometryRate>20.0</odometryRate>
+        <robotBaseFrame>base_footprint</robotBaseFrame>
+        <robotNamespace>/</robotNamespace>
+      </plugin>
+      <pose>0 -4 0 0 -0 0</pose>
+    </model>
+    <model name='willowgarage'>
+      <static>1</static>
+      <pose>-16 -10 0 0 -0 0</pose>
+      <link name='walls'>
+        <collision name='collision'>
+          <geometry>
+            <mesh>
+              <uri>model://willowgarage/meshes/willowgarage_collision.dae</uri>
+            </mesh>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <bounce/>
+            <friction>
+              <ode/>
+            </friction>
+            <contact>
+              <ode/>
+            </contact>
+          </surface>
+        </collision>
+        <visual name='visual'>
+          <geometry>
+            <mesh>
+              <uri>model://willowgarage/meshes/willowgarage_visual.dae</uri>
+            </mesh>
+          </geometry>
+          <cast_shadows>0</cast_shadows>
+        </visual>
+        <velocity_decay>
+          <linear>0</linear>
+          <angular>0</angular>
+        </velocity_decay>
+        <self_collide>0</self_collide>
+        <kinematic>0</kinematic>
+        <gravity>1</gravity>
+      </link>
+    </model>
+    <state world_name='default'>
+      <sim_time>250 706000000</sim_time>
+      <real_time>267 272990510</real_time>
+      <wall_time>1493819106 65522040</wall_time>
+      <model name='ground_plane'>
+        <pose>0 0 0 0 -0 0</pose>
+        <link name='link'>
+          <pose>0 0 0 0 -0 0</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='minilab'>
+        <pose>-0.095703 -3.96759 0.04356 0 -0.01036 0.102175</pose>
+        <link name='base_footprint'>
+          <pose>-0.095703 -3.96759 0.04356 0 -0.01036 0.102175</pose>
+          <velocity>-0 0 0 -0 -0 -0</velocity>
+          <acceleration>-0 0 1e-06 -0 -0 -0</acceleration>
+          <wrench>-0 0 7e-06 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='willowgarage'>
+        <pose>-15.1995 -31.9707 0 0 -0 0</pose>
+        <link name='walls'>
+          <pose>-15.1995 -31.9707 0 0 -0 0</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+    </state>
+    <gui fullscreen='0'>
+      <camera name='user_camera'>
+        <pose>50.1032 -39.0357 36.4189 0 0.699643 2.60819</pose>
+        <view_controller>orbit</view_controller>
+      </camera>
+    </gui>
+  </world>
+</sdf>

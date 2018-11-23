@@ -1,0 +1,237 @@
+<?xml version="1.0" ?>
+<sdf version='1.4'>
+  <model name='minilab_modelisation'>
+    <link name='base_link'>
+      <pose>0 0 0 0 -0 0</pose>
+      <inertial>
+        <pose>0.0771367 -0.00714267 0.0631403 0 -0 0</pose>
+        <mass>4.14528</mass>
+        <inertia>
+          <ixx>0.0189561</ixx>
+          <ixy>0.00162642</ixy>
+          <ixz>-0.00214742</ixz>
+          <iyy>0.0227686</iyy>
+          <iyz>-0.000554088</iyz>
+          <izz>0.021762</izz>
+        </inertia>
+      </inertial>
+      <collision name='base_link_collision'>
+        <pose>0 0 0 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>file://~/robmob_ws/src/minilab/minilab_navigation/meshes/modelisation/base_link.STL</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name='base_link_collision_camera_link'>
+        <pose>0.112 0 0.201 1.5708 -5.55112e-17 1.5708</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>file://~/robmob_ws/src/minilab/minilab_navigation/meshes/modelisation/camera_link.STL</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name='base_link_collision_hokuyo_link'>
+        <pose>0.21 0 0.068 1.5708 -5.55112e-17 1.5708</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>file://~/robmob_ws/src/minilab/minilab_navigation/meshes/modelisation/hokuyo_link.STL</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name='base_link_collision_ir1'>
+        <pose>0.19136 -0.11362 0.012977 1.5708 -0 0.87266</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>file://~/robmob_ws/src/minilab/minilab_navigation/meshes/modelisation/ir1.STL</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name='base_link_collision_ir2'>
+        <pose>0.2264 -0.054662 0.012977 1.5708 5.55112e-17 1.2217</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>file://~/robmob_ws/src/minilab/minilab_navigation/meshes/modelisation/ir2.STL</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name='base_link_collision_ir3'>
+        <pose>0.2422 -0.02225 0.012977 1.5708 -5.55112e-17 1.5708</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>file://~/robmob_ws/src/minilab/minilab_navigation/meshes/modelisation/ir3.STL</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name='base_link_collision_ir4'>
+        <pose>0.23649 0.054662 0.012977 1.5708 -0 1.9199</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>file://~/robmob_ws/src/minilab/minilab_navigation/meshes/modelisation/ir4.STL</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name='base_link_collision_ir5'>
+        <pose>0.21032 0.11362 0.012977 1.5708 -2.22045e-16 2.2689</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>file://~/robmob_ws/src/minilab/minilab_navigation/meshes/modelisation/ir5.STL</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name='base_link_collision_right_wheel'>
+        <pose>0.129 -0.168 0.045 2.27265 1.11022e-16 1.5708</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>file://~/robmob_ws/src/minilab/minilab_navigation/meshes/modelisation/right_wheel.STL</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <visual name='base_link_visual'>
+        <pose>0 0 0 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>file://~/robmob_ws/src/minilab/minilab_navigation/meshes/modelisation/base_link.STL</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <visual name='base_link_visual_camera_link'>
+        <pose>0.112 0 0.201 1.5708 -5.55112e-17 1.5708</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>file://~/robmob_ws/src/minilab/minilab_navigation/meshes/modelisation/camera_link.STL</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <visual name='base_link_visual_hokuyo_link'>
+        <pose>0.21 0 0.068 1.5708 -5.55112e-17 1.5708</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>file://~/robmob_ws/src/minilab/minilab_navigation/meshes/modelisation/hokuyo_link.STL</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <visual name='base_link_visual_ir1'>
+        <pose>0.19136 -0.11362 0.012977 1.5708 -0 0.87266</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>file://~/robmob_ws/src/minilab/minilab_navigation/meshes/modelisation/ir1.STL</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <visual name='base_link_visual_ir2'>
+        <pose>0.2264 -0.054662 0.012977 1.5708 5.55112e-17 1.2217</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>file://~/robmob_ws/src/minilab/minilab_navigation/meshes/modelisation/ir2.STL</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <visual name='base_link_visual_ir3'>
+        <pose>0.2422 -0.02225 0.012977 1.5708 -5.55112e-17 1.5708</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>file://~/robmob_ws/src/minilab/minilab_navigation/meshes/modelisation/ir3.STL</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <visual name='base_link_visual_ir4'>
+        <pose>0.23649 0.054662 0.012977 1.5708 -0 1.9199</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>file://~/robmob_ws/src/minilab/minilab_navigation/meshes/modelisation/ir4.STL</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <visual name='base_link_visual_ir5'>
+        <pose>0.21032 0.11362 0.012977 1.5708 -2.22045e-16 2.2689</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>file://~/robmob_ws/src/minilab/minilab_navigation/meshes/modelisation/ir5.STL</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <visual name='base_link_visual_right_wheel'>
+        <pose>0.129 -0.168 0.045 2.27265 1.11022e-16 1.5708</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>file://~/robmob_ws/src/minilab/minilab_navigation/meshes/modelisation/right_wheel.STL</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <velocity_decay>
+        <linear>0</linear>
+        <angular>0</angular>
+      </velocity_decay>
+    </link>
+    <link name='left_wheel'>
+      <pose>0.129 0.168 0.045 -2.6225 -2.77556e-17 -1.5708</pose>
+      <inertial>
+        <pose>-0.023439 -1.708e-06 2.8975e-06 0 -0 0</pose>
+        <mass>0.1569</mass>
+        <inertia>
+          <ixx>6.0465e-11</ixx>
+          <ixy>2.3846e-09</ixy>
+          <ixz>-4.0453e-09</ixz>
+          <iyy>3.6473e-07</iyy>
+          <iyz>2.6451e-11</iyz>
+          <izz>3.647e-07</izz>
+        </inertia>
+      </inertial>
+      <collision name='left_wheel_collision'>
+        <pose>0 0 0 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>file://~/robmob_ws/src/minilab/minilab_navigation/meshes/modelisation/left_wheel.STL</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <visual name='left_wheel_visual'>
+        <pose>0 0 0 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>file://~/robmob_ws/src/minilab/minilab_navigation/meshes/modelisation/left_wheel.STL</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <velocity_decay>
+        <linear>0</linear>
+        <angular>0</angular>
+      </velocity_decay>
+    </link>
+    <joint name='base_link_left_wheel_joint' type='revolute'>
+      <child>left_wheel</child>
+      <parent>base_link</parent>
+      <axis>
+        <xyz>-3.58047e-15 -1 2.77556e-17</xyz>
+        <limit>
+          <lower>0</lower>
+          <upper>0</upper>
+          <effort>30</effort>
+          <velocity>1</velocity>
+        </limit>
+        <dynamics/>
+      </axis>
+    </joint>
+  </model>
+</sdf>

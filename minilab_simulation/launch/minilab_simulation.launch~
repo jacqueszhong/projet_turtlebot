@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<launch>
+	<group ns="robot01">
+		<include file="$(find minilab_simulation)/launch/minilab_gazebo.launch" />
+		<include file="$(find minilab_simulation)/launch/minilab_state_publisher.launch" />
+	</group>
+</launch>
