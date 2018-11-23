@@ -37,8 +37,6 @@ It is possible to run steps 2,3,4 at the same time with :
 
 ## Things to do
 Before next class :
-* Teleop with keyboard
-* Clean launching of SLAM
 
 In general :
 * Path finding in simulation (14/12/2018)
@@ -54,4 +52,5 @@ In general :
 
 ## Author
 Jacques Zhong [Jaquapi](https://github.com/jacqueszhong)
+
 Maeva Arlandis [Barbe Bleue](https://github.com/BarbeBleue)
