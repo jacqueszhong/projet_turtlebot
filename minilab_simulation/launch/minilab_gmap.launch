@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<launch>
+	<arg name="map" default="buvette" />
+	<include file="$(find minilab_simulation)/launch/minilab_gazebo.launch" >
+		<arg name="map_name" value="$(arg map)" />
+	</include>
+	<include file="$(find minilab_simulation)/launch/minilab_state_publisher.launch" />
+
+
+	<node pkg="gmapping" type="slam_gmapping" name="gmapping"/>
+	<node pkg="rviz" type="rviz" name="rviz"/>
+
+
+
+</launch>

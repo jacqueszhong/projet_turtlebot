@@ -2,34 +2,40 @@
 import rospy
 from geometry_msgs.msg import Twist
 
-"""
-1p : teleop
-1p : slam
-5p : path finding
-4p : suivi de chemin
-1p : repartition travail
-1p : qualité video
-2p : contenu video
-1p : qualité prez
-4p : contenu prez
-bonus : evitement obstacle, arret automatique
-"""
-
-twist = Twist()
+import click
 
 def talker():
+    #Init
+    pub_name = "turtle1/cmd_vel"
+    twist = Twist()
+    velocity = 2
 
     #Publishing velocity cmd
-    pub = rospy.Publisher('turtle1/cmd_vel', Twist)
+    pub = rospy.Publisher(pub_name, Twist)
 
     #Starts the node
     rospy.init_node('Key_teleop')
-
+    
     rate = rospy.Rate(10)
-
-    twist.linear.x = 4*data.axes[1]
-    twist.angular.z = 4*data.axes[0]
+    
+    rospy.loginfo("Press z,q,s or d to move :")
     while not rospy.is_shutdown():
+        key = click.getchar()
+        #print(key)
+        if key == 'z':
+            twist.linear.x = velocity
+            twist.angular.z = 0
+        elif key == 's':
+            twist.linear.x = -velocity
+            twist.angular.z = 0
+
+        if key == 'q':
+            twist.linear.x = 0
+            twist.angular.z = velocity
+        elif key == 'd':
+            twist.linear.x = 0
+            twist.angular.z = -velocity
+
         pub.publish(twist)
         rate.sleep()
 
