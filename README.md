@@ -62,4 +62,5 @@ http://wiki.ros.org/map_server
 
 ## Author
 Jacques Zhong [Jaquapi](https://github.com/jacqueszhong)
+
 Maeva Arlandis [Barbe Bleue](https://github.com/BarbeBleue)
