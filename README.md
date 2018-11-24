@@ -31,14 +31,13 @@ In the rviz interface, add /map and /scan topics.
 It is possible to run steps 2,3,4 at the same time with :
 ```
 	roslaunch minilab_simulation minilab_gmap.launch
-
 ```
 
 
 ## Things to do
-Before next class :
-* Teleop with keyboard
-* Clean launching of SLAM
+Next :
+* Write prm graph function (store connections, find connections)
+* Write graph search (Djikstra / Astar)
 
 In general :
 * Path finding in simulation (14/12/2018)
@@ -50,6 +49,15 @@ In general :
 
 ## Little problems
 * Logging ? (key_teleop)
+* How map_saver knows which map to save ?
+
+## Useful ressources
+* gmapping :
+```
+http://wiki.ros.org/gmapping
+http://wiki.ros.org/slam_gmapping/Tutorials/MappingFromLoggedData
+http://wiki.ros.org/map_server
+```
 
 
 ## Author
