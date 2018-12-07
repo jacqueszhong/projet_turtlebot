@@ -6,7 +6,7 @@ import click
 
 def talker():
     #Init
-    pub_name = "turtle1/cmd_vel"
+    pub_name = "/cmd_vel"
     twist = Twist()
     velocity = 2
 

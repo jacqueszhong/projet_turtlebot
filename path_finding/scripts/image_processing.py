@@ -10,7 +10,9 @@ def crop_image(img,tol=255):
 size_robot=10
 
 #Open the map
-img = cv.imread('mymap.pgm',0)
+img = cv.imread('../mymap.pgm',0)
+
+print(img)
 
 #Thresholding
 ret,thresh1 = cv.threshold(img,200,255,cv.THRESH_BINARY)
@@ -27,7 +29,7 @@ kernel_r = np.ones((size_robot,size_robot),np.uint8)
 erosion = cv.erode(opening,kernel_r,iterations = 1)
 
 #Save
-#cv.imwrite('test_map.png',erosion)
+cv.imwrite('test_map.pgm',erosion)
 
 #Show
 cv.namedWindow('image',cv.WINDOW_NORMAL)

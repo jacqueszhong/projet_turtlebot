@@ -24,7 +24,7 @@
   
 4) display the map and lasers shooting area :
 ```
-	rosun rviz rviz
+	rosrun rviz rviz
 ```
 In the rviz interface, add /map and /scan topics.
 
