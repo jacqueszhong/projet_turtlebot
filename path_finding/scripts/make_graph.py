@@ -43,9 +43,12 @@ def write_blank_pgm(filename):
 
 class BuildRRT :
 
-	_epsilonDist = 5 #Allowed error to reach target
-	_res_deltaQ = 10 #Resolution for finding delta_Q
+	_epsilonDist = 15 #Allowed error to reach target
 
+	_d_increment = 1  #Distanceiincrements
+	_nb_increment = 10 #Number of increments
+
+	_min_dist_RRT = 50
 
 
 	def __init__(self):
@@ -57,9 +60,7 @@ class BuildRRT :
 		
 
 	""" Initialisation methods """
-	def init(self,targetPos, initPos = (1,1),deltaQ = 40,fileName = None):
-
-		self._deltaQ = deltaQ #Incremental distance
+	def init(self,targetPos, initPos = (1,1),fileName = None):
 		self._initPos = initPos
 		self._targetPos = targetPos
 		if fileName != None :
@@ -70,7 +71,7 @@ class BuildRRT :
 		Load pgm file from map_saver (ROS map_saver pkg)
 		"""
 
-		im = open(pgm_name,"rt")
+		im = open(pgm_name,"rt",encoding="ISO-8859-1")
 
 		desc = 0
 		line = im.readline()
@@ -119,7 +120,7 @@ class BuildRRT :
 		x = random.randint(0,w - 1)
 		return (y ,x)
 
-	def new_config(self,qnear,qrand,deltaQ):
+	def new_config(self,qnear,qrand):
 		"""
 
 		:param: qnear, tuple
@@ -127,16 +128,14 @@ class BuildRRT :
 		:param: float, maximum edge length
 		"""
 
-		qnear = np.array(qnear)
-		qrand = np.array(qrand)
-		qdiff = qrand - qnear
+		qdiff = np.array(qrand) - np.array(qnear)
 
 		#Cas points identiques
 		if qdiff[0] == 0 and qdiff[1] == 0 :
 			return -1
 
 		#Calcul de l'incrément
-		qincrement = (deltaQ * qdiff) / (linalg.norm(qdiff) * self._res_deltaQ)
+		qincrement = (self._d_increment * qdiff) /linalg.norm(qdiff)
 
 		#print("qnear={0},qrand={1},qincrement={2}".format(qnear,qrand,qincrement))
 
@@ -144,13 +143,14 @@ class BuildRRT :
 		x_new = qnear[1]
 		done = False
 		i = 0
-		while (i < self._res_deltaQ) and (not done):
+		while (i < self._nb_increment) and (not done):
 			y_new += qincrement[0]
 			x_new += qincrement[1]
 			
 			#print("newy={0},newx={1},mapstatus={2}".format(y_new,x_new,self._map_data[int(y_new)][int(x_new)]))
 
 			if self.has_collided(int(y_new),int(x_new)) : #Collision with a wall
+				#print("Collided!")
 				y_new -= qincrement[0]
 				x_new -= qincrement[1]
 				done = True
@@ -182,12 +182,12 @@ class BuildRRT :
 		print("Init : {0},{1}".format(self._height,self._width))
 
 
-
 		#Run RRT until target is reached
 		
 		#dist = math.sqrt((qnew[0]-self._targetPos[0])**2 + (qnew[1]-self._targetPos[1])**2)
 		dist = abs(qnew[0] - self._targetPos[0]) + abs(qnew[1] - self._targetPos[1])		
 
+		c = 0
 		while dist > self._epsilonDist and (not done):
 			#print("NEWTURN")
 			#Chose a random configuration on map
@@ -198,19 +198,20 @@ class BuildRRT :
 			qnear = G.get_pos_vertex(idnear)
 
 			#Compute new configuration
-			qnew = self.new_config(qnear, qrand, self._deltaQ)
+			qnew = self.new_config(qnear, qrand)
 			if qnew == -1 :
 				#Invalid new configuration
 				pass
 
 			elif not G.has_pos(qnew) :
 				idnew = G.add_vertex(qnew)
-				print("Added vertex : id={0},pos={1}".format(idnew,qnew))
+				#print("Added vertex : id={0},pos={1}".format(idnew,qnew))
 
 
 				#Constructs hierarchical graph
 				G.add_edge_by_id(idnew, idnear)#Vectices only know their parent vertice
 
+				#Distance between last found node and target
 				dist = abs(qnew[0] - self._targetPos[0]) + abs(qnew[1] - self._targetPos[1])
 
 			#End condition
@@ -218,7 +219,9 @@ class BuildRRT :
 			if K == 0 :
 				done = True
 
-			
+			c += 1
+
+		print("c="+str(c))		
 
 
 		print("Found target ! id={0},pos={1}".format(idnew,qnew))

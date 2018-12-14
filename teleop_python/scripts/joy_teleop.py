@@ -7,12 +7,14 @@ from sensor_msgs.msg import Joy
 pub_name = '/cmd_vel'
 twist = Twist()
 
+speed = 0.4
+
 #Callback pour le suscriber au node joystick
 def callback(data):
     global twist
 
-    twist.linear.x = 4*data.axes[1] 
-    twist.angular.z = 4*data.axes[0]  
+    twist.linear.x = speed*data.axes[1] 
+    twist.angular.z = speed*data.axes[0]  
 
     #seuils activation
     if abs(data.axes[1]) <= 0.125:

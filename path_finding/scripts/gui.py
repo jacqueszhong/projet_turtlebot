@@ -1,7 +1,9 @@
+import sys
 import pygame as pg
 import time
 from random import randrange as rand
 from math import inf, hypot
+from make_graph import *
 
 from constant import *
 import classes as cl
@@ -53,6 +55,11 @@ class Application:
     # States: 'normal', 'start_drag', 'goal_drag', 'drawing', 'erasing', 'running', 'path_found'.
     self.state = 'normal'; print(self.state)
 
+    self.rrt = BuildRRT()
+    self.rrt.load_pgm_map(IMAGE_NAME)
+	
+	
+
     self.mainloop()
 
   # - - - - - - - - - - - - - - - - - - - - - -
@@ -85,10 +92,11 @@ class Application:
             elif self.state == 'goal_drag':
               self.goal.rect.center = e.pos
 
+
         elif e.type == pg.KEYDOWN:
           if e.key == pg.K_RETURN:  # Enter pressed: run RRT algorithm.
             self.state = 'running'; print(self.state)
-            if self.run() == 'quit':
+            if self.run2() == 'quit':
               done = True
             self.state = 'normal'; print(self.state)
       # ---------------------------
@@ -101,9 +109,23 @@ class Application:
       pg.display.flip()
   # - - - - - - - - - - - - - - - - - - - - - -
 
+  def run2(self):
+    self.rrt.init( self.goal.rect.center, initPos = self.start.rect.center)
+    g = self.rrt.runRRT()
+    #print(g.get_path_pos())
+    self.paint_path2(g.get_path_pos())
+    loop = True
+    while loop:
+      for e in pg.event.get():
+        if e.type == pg.QUIT:
+          return 'quit'
+        elif e.type == pg.KEYDOWN:
+          loop = False
+
   # - - - - - - - - - - - - - - - - - - - - - -
   # - Function that implements RRT algorithm:
   def run(self):
+
     # Clears tree surface.
     self.tree_surf.fill(BG_COLOR)
     # Additional mask variable to obs_surf, for mask collision tests.
@@ -159,7 +181,7 @@ class Application:
       # - RRT algorithm steps:
 
       # Chooses a random point on the screen:
-      newpoint = (rand(WIDTH/11)*11,rand(HEIGHT))
+      newpoint = (rand(WIDTH),rand(HEIGHT))
 
       # Finds tree's vertex nearest to the point chosen:
       nearest_dist = inf
@@ -294,6 +316,20 @@ class Application:
     pg.display.flip()
 
     return path_len, path_dist
+  # - - - - - - - - - - - - - - - - - - - - - -
+
+    # - - - - - - - - - - - - - - - - - - - - - -
+  # Paints the path connecting 'start' to 'goal', and returns its information (lenght and total path's distance):
+  def paint_path2(self,glist):
+    # - Draws path on the tree's surface image, then blits it on screen:
+    past_node=glist[0]
+    for node in glist[1:]:
+      print(node)
+      pg.draw.line(self.tree_surf,PATH_EDGE_COLOR,past_node,node,PATH_EDGE_WIDTH)
+      pg.draw.circle(self.tree_surf,PATH_VERTEX_COLOR,node,PATH_VERTEX_RADIUS)
+      past_node=node
+    self.screen.blit(self.tree_surf,(0,0))
+    pg.display.flip()
   # - - - - - - - - - - - - - - - - - - - - - -
 # ---------------------------------------------------------------------------------
 
