@@ -4,6 +4,12 @@
 Given a saved map file, construct a connection graph
 """
 
+
+"""
+
+.33 24 
+
+"""
 import sys
 import random
 import time
@@ -282,21 +288,40 @@ class Graph :
 			print("Vertex {0} : {1}".format(k,v))
 
 	def show_path(self):
-		last_id = self.get_last_id()
+		
+		cur_id = self.get_last_id()-1
 
-		cur_id = last_id
-
+		print(cur_id)
 		while (cur_id > 0):
-			print(get_neighbours)
-			cur_id -= 1
+			for e in self.get_neighbours(cur_id):
+				print(e)
+				cur_id = e
+
+	def get_path_pos(self):
+		
+		list_pos = []
+
+		cur_id = self.get_last_id()-1
+		list_pos.append(self.get_pos_vertex(cur_id))
+
+		while(cur_id)>0:
+			for e in self.get_neighbours(cur_id):
+				list_pos.append(self.get_pos_vertex(e))
+				cur_id = e
+
+		return list_pos
 
 
 
-rrt = BuildRRT()
-rrt.init( (200,200), initPos = (260,360) )
-rrt.load_pgm_map("test_map.pgm")
 
-g = rrt.runRRT()
+if __name__ == '__main__':
+	rrt = BuildRRT()
+	rrt.init( (200,200), initPos = (260,360) )
+	rrt.load_pgm_map("test_map.pgm")
+
+	g = rrt.runRRT()
+
+	print(g.get_path_pos())
 
 """
 pgm_name = "../mymap.pgm"
