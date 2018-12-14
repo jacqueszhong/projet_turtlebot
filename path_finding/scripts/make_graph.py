@@ -70,7 +70,7 @@ class BuildRRT :
 		Load pgm file from map_saver (ROS map_saver pkg)
 		"""
 
-		im = open(pgm_name,"rt")
+		im = open(pgm_name,"rt", encoding="ISO-8859-1")
 
 		desc = 0
 		line = im.readline()
@@ -205,7 +205,7 @@ class BuildRRT :
 
 			elif not G.has_pos(qnew) :
 				idnew = G.add_vertex(qnew)
-				print("Added vertex : id={0},pos={1}".format(idnew,qnew))
+				#print("Added vertex : id={0},pos={1}".format(idnew,qnew))
 
 
 				#Constructs hierarchical graph
