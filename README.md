@@ -42,9 +42,9 @@ Next :
 In general :
 * Path finding in simulation (14/12/2018)
 * Mapping in real world (21/12/2018)
-* Path following (16/12/2018)
-* Going back to start point (17/12/2018)
-* (Bonus) Autonomous exploration and obstacle avoidance (18/12/2018)
+* Path following (16/01/2018)
+* Going back to start point (17/01/2018)
+* (Bonus) Autonomous exploration and obstacle avoidance (18/01/2018)
 * Demonstration video, presentation, demo (28/01/2018)
 
 ## Little problems
