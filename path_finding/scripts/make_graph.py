@@ -71,7 +71,7 @@ class BuildRRT :
 		Load pgm file from map_saver (ROS map_saver pkg)
 		"""
 
-		im = open(pgm_name,"rt")
+		im = open(pgm_name,"rt", encoding="ISO-8859-1")
 
 		desc = 0
 		line = im.readline()

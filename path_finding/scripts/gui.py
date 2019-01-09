@@ -122,6 +122,7 @@ class Application:
         elif e.type == pg.KEYDOWN:
           loop = False
 
+
   # - - - - - - - - - - - - - - - - - - - - - -
   # - Function that implements RRT algorithm:
   def run(self):
