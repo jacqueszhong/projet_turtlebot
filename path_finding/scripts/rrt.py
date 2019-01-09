@@ -4,7 +4,6 @@ import time
 
 import numpy as np
 from math import hypot, sqrt
-import image_processing as imp
 from random import randrange as rand
 from numpy import linalg
 import cv2
@@ -17,7 +16,7 @@ import math
 
 
 GUI = 1  # activate graphic interface
-CLICK_COUNTER = 0  # count number of right click on the interface
+#CLICK_COUNTER = 0  # count number of right click on the interface
 DELTA_RADIUS = 10 #Allowed error to reach target
 MAX_DIST = 20 #Incremental distance
 
@@ -34,7 +33,7 @@ class Vertex:
 # - RRT class :
 class RRT :
 
-
+	CLICK_COUNTER = 0
 
 
 	def __init__(self,img_map):
@@ -201,7 +200,7 @@ class RRT :
 			currvertex2 = currvertex2.parent
 		self._path.append(currvertex2.pos)
 
-		#self.shorten_path()
+		self.shorten_path()
 
 		if GUI:
 			self.draw_path(img_map)
@@ -297,17 +296,19 @@ class RRT :
 
 	# mouse callback function
 	def pos_define(self,event,x,y,flags,param):
-		global CLICK_COUNTER
+		#global CLICK_COUNTER
 		if event == cv2.EVENT_LBUTTONDBLCLK:
 			if not self.collide_circle((x,y),DELTA_RADIUS):
-				if CLICK_COUNTER==0:
+				if self.CLICK_COUNTER==0:
 					self._initPos = (x,y)
+					print("InitPos = ("+str(x)+","+str(y)+")")
 					param=cv2.circle(param,(x,y),DELTA_RADIUS,(0,255,0),-1)
-				if CLICK_COUNTER==1:
+				if self.CLICK_COUNTER==1:
 					self._targetPos = (x,y)
+					print("targetPos = ("+str(x)+","+str(y)+")")
 					param=cv2.circle(param,(x,y),DELTA_RADIUS,(0,0,255),-1)
 					#param = cv2.line(param,self._initPos,self._targetPos,0,1)
-				CLICK_COUNTER +=1
+				self.CLICK_COUNTER +=1
 
 
 if __name__ == '__main__':
@@ -322,7 +323,7 @@ if __name__ == '__main__':
 	if GUI:
 		cv2.imshow('RRT', img_map)
 		cv2.setMouseCallback('RRT',rrt.pos_define, param=img_map)
-		while(CLICK_COUNTER<2):
+		while(rrt.CLICK_COUNTER<2):
 			cv2.imshow('RRT', img_map)
 			if cv2.waitKey(20) & 0xFF == 27:
 				break

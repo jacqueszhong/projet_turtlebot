@@ -5,13 +5,16 @@ from nav_msgs.msg import OccupancyGrid
 from nav_msgs.msg import Path
 import tf
 
-from make_graph import *
+#from make_graph import *
+from rrt import *
 
+GUI = 1
 
 class Planner :
 
-
 	def __init__(self):
+
+
 		rospy.init_node("Planner")
 
 		#Subscribers
@@ -40,22 +43,45 @@ class Planner :
 	def get_map_info(self):
 		return 0
 
-	def find_path(self):
-		"""
-		rrt = BuildRRT()
-		rrt.init( (200,300), initPos = (260,360) )
-		rrt.load_pgm_map("test_map.pgm")
+	def find_path(self, img, initPos, targetPos):
 
-		g = rrt.runRRT()
+		
+		#load initial and target position
+		if not GUI:
+			rrt = RRT(img)
+			rrt._initPos = init_pos
+			rrt._targetPos = target_pos
+			rrt.start_connect()
 
-		return g.get_path_pos()
+		#load Position from subscriber
+		else:
+			img_map = cv2.imread("test_map.pgm",1)
+			img_map2= cv2.cvtColor(img_map,cv2.COLOR_BGR2GRAY)
+			ret,img_map2 = cv2.threshold(img_map2,127,255,cv2.THRESH_BINARY_INV)
 
-		"""
-		#A COMPLETER QUAND RRT MARCHE
+			# Create rrt class support
+			rrt = RRT(img_map=img_map2)
 
+			cv2.imshow('RRT', img_map)
+			cv2.setMouseCallback('RRT',rrt.pos_define, param=img_map)
+			while(rrt.CLICK_COUNTER<2):
+				cv2.imshow('RRT', img_map)
+				if cv2.waitKey(20) & 0xFF == 27:
+					break
+			print("ok")
+			rrt.start_connect(img_map)
+			#rrt.interpolation_path()	
 
+			while(1):
+				cv2.imshow('RRT', img_map)
+				if cv2.waitKey(10) & 0xFF == 27:
+					break
+			cv2.destroyAllWindows()
 
-		return Path() 
+		
+		path = rrt._path
+		print("PLANNER_NODE : quit with path = "+str(path))
+		return path
 
 
 	def run_planification(self):
@@ -70,8 +96,17 @@ class Planner :
 			#print("Not valid tf lookupTransform")
 			pass
 
-		#Retrieve path
-		path = self.find_path()
+		#Get path
+		img_map = cv2.imread("test_map.pgm",1)
+		img_map2= cv2.cvtColor(img_map,cv2.COLOR_BGR2GRAY)
+		ret,img_map2 = cv2.threshold(img_map2,127,255,cv2.THRESH_BINARY_INV)
+
+		self._img = img_map2
+		self._initPos = (160,100)
+		self._targetPos = (250,170)
+
+		path = self.find_path(self._img,self._initPos,self._targetPos)
+		print(path)
 		self.pub_path.publish(path)
 
 

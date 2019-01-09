@@ -36,4 +36,5 @@ cv.imwrite('test_map.pgm',erosion)
 #Show
 cv.namedWindow('image',cv.WINDOW_NORMAL)
 cv.imshow('image', erosion)
+print("in image proc")
 if cv.waitKey(): cv.destroyAllWindows()
