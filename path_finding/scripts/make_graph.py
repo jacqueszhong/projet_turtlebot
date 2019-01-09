@@ -71,7 +71,7 @@ class BuildRRT :
 		Load pgm file from map_saver (ROS map_saver pkg)
 		"""
 
-		im = open(pgm_name,"rt",encoding="ISO-8859-1")
+		im = open(pgm_name,"rt")
 
 		desc = 0
 		line = im.readline()
@@ -116,25 +116,25 @@ class BuildRRT :
 
 	""" RRT methods """
 	def random_config(self,h,w):
-		y = random.randint(0,h - 1)
-		x = random.randint(0,w - 1)
+		y = random.random()*(h - 1)
+		x = random.random()*(w - 1)
 		return (y ,x)
 
 	def new_config(self,qnear,qrand):
 		"""
 
-		:param: qnear, tuple
-		:param: qrand, list 
+		:param: qnear, tuple of pos
+		:param: qrand, tuple of pos
 		:param: float, maximum edge length
 		"""
 
-		qdiff = np.array(qrand) - np.array(qnear)
-
 		#Cas points identiques
-		if qdiff[0] == 0 and qdiff[1] == 0 :
+		if qrand == qnear:
 			return -1
 
+		
 		#Calcul de l'incrément
+		qdiff = np.array(qrand) - np.array(qnear)
 		qincrement = (self._d_increment * qdiff) /linalg.norm(qdiff)
 
 		#print("qnear={0},qrand={1},qincrement={2}".format(qnear,qrand,qincrement))
@@ -233,13 +233,15 @@ class BuildRRT :
 class Graph :
 	"""
 	Graph structure for RRT
+	Stores a dictionnary of edges and vertices.
+
 	"""
 	__vertex_id = 0
 
 	def __init__(self):
 		print("Initializing Graph")
-		self._graph = defaultdict(set) #Dictionary {[int]:[int]} 
-		self._vertices = {} #Dictionary {int:[int,int]}
+		self._graph = defaultdict(set) #Dictionary {[double]:[double]} 
+		self._vertices = {} #Dictionary {int:[double,double]}
 
 
 	def add_vertex(self, pos):
@@ -252,7 +254,7 @@ class Graph :
 		"""Returns the vertex id nearest to pos"""
 		first = True
 		for k,v in self._vertices.items():
-			dist = math.sqrt((v[0]-pos[0])**2 + (v[1]-pos[1])**2) 
+			dist = abs(v[0]-pos[0]) + abs(v[1]-pos[1]) 
 			#print("v={0},pos={1},dist={2}".format(v,pos,dist))
 			if first :
 				minDist = dist
@@ -315,16 +317,33 @@ class Graph :
 		return list_pos
 
 
+class Vertex :
+	def __init__(self,pos,parent):
+		self.pos = pos
+		self.parent = parent
 
+	def __repr__(self):
+		print("Pos = "+str(pos)+", parent = "+str(parent))
+
+
+import cv2
 
 if __name__ == '__main__':
 	rrt = BuildRRT()
-	rrt.init( (200,200), initPos = (260,360) )
+	rrt.init( (200,300), initPos = (260,360) )
 	rrt.load_pgm_map("test_map.pgm")
 
 	g = rrt.runRRT()
 
 	print(g.get_path_pos())
+
+
+	img = np.zeros((512,512,3), np.uint8)
+	cv2.line(img,(0,0),(511,511),(255,0,0),5)
+
+	cv2.namedWindow("Display window",cv2.WINDOW_AUTOSIZE)
+	cv2.imshow("truc",img)
+	time.sleep(100)
 
 """
 pgm_name = "../mymap.pgm"

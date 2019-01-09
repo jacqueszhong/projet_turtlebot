@@ -2,19 +2,21 @@
 import rospy
 from geometry_msgs.msg import Twist
 from sensor_msgs.msg import Joy
+import time
 
 
 pub_name = '/cmd_vel'
 twist = Twist()
 
 speed = 0.4
+speedw = 0.8
 
 #Callback pour le suscriber au node joystick
 def callback(data):
     global twist
 
     twist.linear.x = speed*data.axes[1] 
-    twist.angular.z = speed*data.axes[0]  
+    twist.angular.z = speedw*data.axes[0]  
 
     #seuils activation
     if abs(data.axes[1]) <= 0.125:
@@ -22,7 +24,6 @@ def callback(data):
     
     if abs(data.axes[0]) <= 0.125:
         twist.angular.z = 0  
-    
 
 
 def talker():

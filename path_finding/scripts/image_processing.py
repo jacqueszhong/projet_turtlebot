@@ -10,7 +10,7 @@ def crop_image(img,tol=1):
 size_robot=10
 
 #Open the map
-img = cv.imread('../polytech.pgm',0)
+img = cv.imread('../mymap.pgm',0)
 
 print(img)
 
