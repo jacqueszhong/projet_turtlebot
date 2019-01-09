@@ -10,10 +10,17 @@ def crop_image(img,tol=1):
     print(img)
     return img[np.ix_(mask.any(1),mask.any(0))]
 
-size_robot=10
 
+def grid_process(grid):
+	grid[grid==-1]=0
+	grid[:] = [int(i*2.55) for i in grid]
+	return grid
 
 def image_process(img=None): #Open the map
+
+	
+	size_robot=10
+
 	if GUI:
 		img = cv.imread('../mymap.pgm',0)
 		cv.namedWindow('image',cv.WINDOW_NORMAL)
@@ -23,7 +30,8 @@ def image_process(img=None): #Open the map
 	#Crop the image to remove the empty borders
 
 	# Mask of non-black pixels (assuming image has a single channel).
-	mask = img < 1
+	tol = 1
+	mask = img < tol
 
 	# Coordinates of non-black pixels.
 	coords = np.argwhere(mask)
