@@ -63,7 +63,7 @@ class RRT :
 		self._path=[]
 		newvertex = Vertex(self._initPos,None)
 		vertices = [newvertex]
-		lin_dist = dist(self._initPos,self._targetPos)
+		#lin_dist = dist(self._initPos,self._targetPos)
 
 		# main loop
 		while not goal:
@@ -78,9 +78,10 @@ class RRT :
 					nearest_dist = currdist
 			# take into account the non-holonomy of the robot
 			newpoint=self.steer(nearest.pos,newpoint)
-
+			print(newpoint)
 			# try to connect the point to the tree
 			if not self.collide_line(nearest.pos,newpoint):
+				print("not collide")
 				newvertex = Vertex(newpoint,nearest)
 				vertices.append(newvertex)
 				
@@ -93,6 +94,8 @@ class RRT :
 				# test if the goal is reached
 				if self.test_goal(newpoint):
 					goal=True
+
+
 
 		# build the path
 		self._path =[]
@@ -163,7 +166,7 @@ class RRT :
 						nearest_dist = currdist
 
 				# take into account the non-holonomy of the robot
-				newpoint=self.steer(nearest.pos,newpoint)
+				#newpoint=self.steer(nearest.pos,newpoint)
 
 				# try to connect the point to the tree
 				if not self.collide_line(newpoint,nearest.pos):
@@ -181,6 +184,8 @@ class RRT :
 
 		# build the path
 		self._path =[]
+
+
 
 		# building depends on which tree finished the algorithm
 		if count == 0:
