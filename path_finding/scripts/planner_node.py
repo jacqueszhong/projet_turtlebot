@@ -1,8 +1,8 @@
 #!/usr/bin/env python
+# coding: utf-8
+
 import rospy
-from nav_msgs.msg import MapMetaData
-from nav_msgs.msg import OccupancyGrid
-from nav_msgs.msg import Path
+from nav_msgs.msg import MapMetaData, OccupancyGrid, Path
 from geometry_msgs.msg import Pose,PoseStamped
 import tf
 import time
@@ -132,9 +132,11 @@ class Planner :
 	def convert_to_pixel(self,coord):
 		res = [0,0,0]
 
-		res[0] = ((res[0] - self._map_origin.position.x) / self._map_resolution) - self._posOffset[0]
-		res[1] = ((res[1] - self._map_origin.position.y) / self._map_resolution) - self._posOffset[1]
+		res[0] = ((coord[0] - self._map_origin.position.x) / self._map_resolution) - self._posOffset[0]
+		res[1] = ((-coord[1] - self._map_origin.position.y) / self._map_resolution) - self._posOffset[1]
 		res[2] = coord[2]
+
+
 
 		return res
 
@@ -147,10 +149,13 @@ class Planner :
 			return
 
 		if DEBUG : #Retrieve map from fixed location
-			m=cv.imread('../mymap.pgm',0) #Debug map
+			m=cv.imread('maps/mymap.pgm',0) #Debug map
 		else : #Retrieve map from topic
 			m =  grid_process(self._grid,self._map_width)
+
+
 			ret,m = cv2.threshold(m,127,255,cv2.THRESH_BINARY_INV)
+			cv.imwrite("gridtest2.pgm",m)
 
 		res = image_process(m)
 
@@ -177,7 +182,7 @@ class Planner :
 
 		#Get info on robot position
 		try :
-			(trans,rot) = self.tf_listener.lookupTransform('/base_link','/map',rospy.Time(0))
+			(trans,rot) = self.tf_listener.lookupTransform('/map','/base_link',rospy.Time(0))
 			print("Trans = "+str(trans))
 			print("Rot = "+str(rot))  #quaternion
 			pos = self.convert_to_pixel(trans)
@@ -215,7 +220,8 @@ if __name__ == '__main__':
 
 	while not rospy.is_shutdown():
 		planner.run_map_process()
-		planner.run_planification()	
+		planner.run_planification()
+		time.sleep(1)
 
 
 

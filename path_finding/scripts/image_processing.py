@@ -1,3 +1,5 @@
+# coding: utf-8
+
 import cv2 as cv
 import numpy as np
 import time
@@ -14,11 +16,16 @@ def grid_process(grid,width):
 	#grid[grid==-1]=0
 	#grid2 = [int(i*2.55) for i in grid]
 	#grid2 = [0 for i in grid2 if i==-1]
+	#Occupancygrid : -1 = non explored
+	# 0 = nothing
+	# 100 = wall
 
 	res = np.array(grid).reshape((width,-1))
 	print(res.shape)
 	res[res == -1] = 0
 	res = res * 2.55
+
+	res = np.array([res[i] for i in range(len(res)-1, -1, -1)])
 
 	return res
 
@@ -28,7 +35,7 @@ def image_process(img=None, GUI=0): #Open the map
 	size_robot=10
 
 	if GUI:
-		img = cv.imread('../mymap.pgm',0)
+		img = cv.imread('maps/mymap.pgm',0)
 		cv.namedWindow('image',cv.WINDOW_NORMAL)
 		cv.imshow('image', img)
 		if cv.waitKey(): cv.destroyAllWindows()
