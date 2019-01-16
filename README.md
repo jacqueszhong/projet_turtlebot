@@ -58,6 +58,18 @@ http://wiki.ros.org/gmapping
 http://wiki.ros.org/slam_gmapping/Tutorials/MappingFromLoggedData
 http://wiki.ros.org/map_server
 ```
+* interpolation :
+```
+http://rco.fr.nf/index.php/2016/07/10/tuto-trajectoire-interpol/
+```
+* conversion d'angle:
+```
+http://www.theconstructsim.com/ros-qa-how-to-convert-quaternions-to-euler-angles/?fbclid=IwAR0gGc5jpxlZ_3hWxxt43tHKz_uUBAXb5xFVLqxS_Njb6VaRSU333Sp0x5s
+```
+* suivi de trajectoire:
+```
+https://syrotek.felk.cvut.cz/course/ROS_CPP_INTRO/exercise/ROS_CPP_TRAJ
+```
 
 
 ## Author
