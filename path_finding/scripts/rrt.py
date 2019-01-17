@@ -4,25 +4,29 @@ import time
 
 import numpy as np
 from math import hypot, sqrt
+import image_processing as imp
 from random import randrange as rand
 from numpy import linalg
 import cv2
 
 import matplotlib.pyplot as plt
 from scipy.interpolate import interp1d
+from scipy.misc import comb
 
 from collections import defaultdict
 import math
 
+import lagrange as lg
+
 
 GUI = 1  # activate graphic interface
-#CLICK_COUNTER = 0  # count number of right click on the interface
+CLICK_COUNTER = 0  # count number of right click on the interface
 DELTA_RADIUS = 10 #Allowed error to reach target
 MAX_DIST = 20 #Incremental distance
 
 # - Function to calculate distance between 2 points:
 def dist(p1,p2):
-  return hypot(p2[0]-p1[0],p2[1]-p1[1])
+	return hypot(p2[0]-p1[0],p2[1]-p1[1])
 
 # - Vertex class:
 class Vertex:
@@ -32,9 +36,6 @@ class Vertex:
 
 # - RRT class :
 class RRT :
-
-	CLICK_COUNTER = 0
-
 
 	def __init__(self,img_map):
 		print("Initializing RRT")
@@ -46,12 +47,7 @@ class RRT :
 		self._height = img_map.shape[0]
 		self._width = img_map.shape[1]
 		self._path=[]
-
-	# - Load the current position of the robot as the initial one and the target position from topics ROS
-	def loadPos(self): #TODO
-	# charge pos of the robot int the map from image_processing
-	# charge final pos of the robot from rviz
-		return 
+		self._size_path=0
 
 
 	def start(self,img_map=None):
@@ -63,7 +59,7 @@ class RRT :
 		self._path=[]
 		newvertex = Vertex(self._initPos,None)
 		vertices = [newvertex]
-		#lin_dist = dist(self._initPos,self._targetPos)
+		lin_dist = dist(self._initPos,self._targetPos)
 
 		# main loop
 		while not goal:
@@ -78,10 +74,9 @@ class RRT :
 					nearest_dist = currdist
 			# take into account the non-holonomy of the robot
 			newpoint=self.steer(nearest.pos,newpoint)
-			print(newpoint)
+
 			# try to connect the point to the tree
 			if not self.collide_line(nearest.pos,newpoint):
-				print("not collide")
 				newvertex = Vertex(newpoint,nearest)
 				vertices.append(newvertex)
 				
@@ -94,8 +89,6 @@ class RRT :
 				# test if the goal is reached
 				if self.test_goal(newpoint):
 					goal=True
-
-
 
 		# build the path
 		self._path =[]
@@ -166,7 +159,7 @@ class RRT :
 						nearest_dist = currdist
 
 				# take into account the non-holonomy of the robot
-				#newpoint=self.steer(nearest.pos,newpoint)
+				newpoint=self.steer(nearest.pos,newpoint)
 
 				# try to connect the point to the tree
 				if not self.collide_line(newpoint,nearest.pos):
@@ -184,8 +177,6 @@ class RRT :
 
 		# build the path
 		self._path =[]
-
-
 
 		# building depends on which tree finished the algorithm
 		if count == 0:
@@ -207,8 +198,18 @@ class RRT :
 
 		self.shorten_path()
 
+		self.update_size_path()
 		if GUI:
 			self.draw_path(img_map)
+
+	def update_size_path(self):
+		self._size_path = 0
+		last=self._path[0]
+
+		for coord in self._path[1:]:
+			d = dist(last,coord)
+			self._size_path += dist(last,coord)
+			last=coord
 
 	def shorten_path(self):
 		"""
@@ -226,30 +227,101 @@ class RRT :
 			j += 1
 		self._path.append(path[j-1])
 
-	"""def interpolation_path(self):
+	def interpolation_path_linear(self,n_points):
+		""" 
+		Linear interpolation of of the path
+		"""
 		
-		#Change the path to make it accessible to the robot
+		if n_points==-1:
+			n_points=0
+		n_points -= len(self._path)
+		if n_points<1 and n_points!=-1:
+			return
+
+
+		path=[] #new path
+		total_size = self._size_path
+
+		size_path = [] #size of each segment of the trajectory
+		nb_points = [] #number of point for each segment of the trajectory
 		
+		## Calculate the size of each part of the trajectory
+
+		last=self._path[0]
+
+		for coord in self._path[1:]:
+			d = dist(last,coord)
+			size_path.append(d)
+			last=coord
+		c_points = 0
+
+		## Calculate the number of points we will create in each part of the trajectory
+
+		for i in range(len(size_path)-1):
+			n = int(n_points*size_path[i]/total_size)
+			nb_points.append(n)
+			c_points += n
+		nb_points.append(n_points-c_points)
+		last=self._path[0]
+
+		## Add new points
+
+		for i in range(1,len(self._path)):
+			path.append(last)			
+			if nb_points != 0:
+				delta_x=self._path[i][0]-last[0]
+				delta_y=self._path[i][1]-last[1]
+				n=nb_points[i-1]+1
+				if delta_x!=0:
+					for k in range(1,n):
+						path.append((last[0]+k*delta_x/n,last[1]+k*delta_y/n))
+				else:
+					delta = (self._path[i][1]-last[1])/(nb_points[i-1]+1)
+					Y= [last[1]+delta*k for k in range(1,nb_points[i-1]+1)]
+					for y in Y:
+						path.append((last[0],y))
+			last=self._path[i]
+
+		path.append(self._path[-1])
+		self._path=path
+
+	def interpolation_path_bezier(self):
+		""" 
+		Bezier curves interpolation of the path
+		"""
+				
+		xvals,yvals=bezier_curve(self._path, nTimes=self._size_path/8)
+
+		path= [(int(xvals[i]),int(yvals[i])) for i in range(len(xvals))]
+		self._path=path
+
+	def interpolation_path_lagrange(self):
+		
+		""" 
+		Lagrange interpolation of the path
+		"""
 		x = [coord[0] for coord in self._path]
-		y = [self._height - coord[1] for coord in self._path]
-		print(x)
-		print(y)
-		f = interp1d(x, y)
-		f2 = interp1d(x, y, kind='cubic')
+		y = [coord[1] for coord in self._path]
+		step = 1
+		T=[d*step+1 for d in range(0,len(x))]
+		X=lg.interpole(T,x)
+		Y=lg.interpole(T,y)
+		path=[]
+		points=20
+		T=[]
+		for n in range(points+1):
+			T.append(1.0+n*(len(x)-1.0)*step/points)
+		for i in T:
+			path.append((int(lg.evalue(X,i)),int(lg.evalue(Y,i))))
+		self._path=path
 
 
-		xnew = np.arange(x[0], x[-1], 2)
-		plt.plot(x, y, 'o', xnew, f(xnew), '-', xnew, f2(xnew), '--')
-		plt.legend(['data', 'linear', 'cubic'], loc='best')
-		plt.show()"""
-
-
-	def draw_path(self,img_map):
+	def draw_path(self,img_map,color=(0,0,255)):
 		"""
 		Draw the path in red into the img
 		"""
 		for i in range(1,len(self._path)):
-			img_map=cv2.line(img_map,self._path[i-1],self._path[i],(0,0,255),4)
+			img_map=cv2.line(img_map,self._path[i-1],self._path[i],color,4)
 			cv2.imshow('RRT', img_map)
 			cv2.waitKey(10)
 
@@ -301,19 +373,60 @@ class RRT :
 
 	# mouse callback function
 	def pos_define(self,event,x,y,flags,param):
-		#global CLICK_COUNTER
+		global CLICK_COUNTER
 		if event == cv2.EVENT_LBUTTONDBLCLK:
 			if not self.collide_circle((x,y),DELTA_RADIUS):
-				if self.CLICK_COUNTER==0:
+				if CLICK_COUNTER==0:
 					self._initPos = (x,y)
-					print("InitPos = ("+str(x)+","+str(y)+")")
 					param=cv2.circle(param,(x,y),DELTA_RADIUS,(0,255,0),-1)
-				if self.CLICK_COUNTER==1:
+				if CLICK_COUNTER==1:
 					self._targetPos = (x,y)
-					print("targetPos = ("+str(x)+","+str(y)+")")
 					param=cv2.circle(param,(x,y),DELTA_RADIUS,(0,0,255),-1)
 					#param = cv2.line(param,self._initPos,self._targetPos,0,1)
-				self.CLICK_COUNTER +=1
+				CLICK_COUNTER +=1
+
+	def draw_path_circle(self,img_map,color=(0,255,255)):
+		for c in self._path:
+			img_map=cv2.circle(img_map,c,2,color,-1)
+			cv2.imshow('RRT', img_map)
+			cv2.waitKey(10)
+		
+
+def bernstein_poly(i, n, t):
+    """
+     The Bernstein polynomial of n, i as a function of t
+    """
+
+    return comb(n, i) * ( t**(n-i) ) * (1 - t)**i
+
+
+def bezier_curve(points, nTimes=1000):
+    """
+       Given a set of control points, return the
+       bezier curve defined by the control points.
+
+       points should be a list of lists, or list of tuples
+       such as [ [1,1], 
+                 [2,3], 
+                 [4,5], ..[Xn, Yn] ]
+        nTimes is the number of time steps, defaults to 1000
+
+        See http://processingjs.nihongoresources.com/bezierinfo/
+    """
+
+    nPoints = len(points)
+    xPoints = np.array([p[0] for p in points])
+    yPoints = np.array([p[1] for p in points])
+
+    t = np.linspace(0.0, 1.0, nTimes)
+
+    polynomial_array = np.array([ bernstein_poly(i, nPoints-1, t) for i in range(0, nPoints)   ])
+
+    xvals = np.dot(xPoints, polynomial_array)
+    yvals = np.dot(yPoints, polynomial_array)
+
+    return xvals, yvals
+
 
 
 if __name__ == '__main__':
@@ -328,12 +441,12 @@ if __name__ == '__main__':
 	if GUI:
 		cv2.imshow('RRT', img_map)
 		cv2.setMouseCallback('RRT',rrt.pos_define, param=img_map)
-		while(rrt.CLICK_COUNTER<2):
+		while(CLICK_COUNTER<2):
 			cv2.imshow('RRT', img_map)
 			if cv2.waitKey(20) & 0xFF == 27:
 				break
+		print("Running RRT connect")
 		rrt.start_connect(img_map)
-		#rrt.interpolation_path()
 
 
 	#load Position from subscriber
@@ -341,6 +454,13 @@ if __name__ == '__main__':
 		rrt.loadPos()
 		rrt.start_connect()
 
+	print(rrt._size_path)
+	rrt.interpolation_path_linear(int(rrt._size_path/4))
+	rrt.draw_path_circle(img_map)
+
+	rrt.interpolation_path_bezier()
+	rrt.draw_path(img_map,(255,0,255))
+	
 
 	#end
 	if GUI:
