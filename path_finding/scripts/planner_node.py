@@ -3,7 +3,7 @@
 
 import rospy
 from nav_msgs.msg import MapMetaData, OccupancyGrid, Path
-from geometry_msgs.msg import Pose,PoseStamped
+from geometry_msgs.msg import Pose,PoseStamped, Point, PointStamped
 import tf
 import time
 
@@ -12,7 +12,7 @@ from rrt import *
 from image_processing import *
 
 MANUAL = 0
-DEBUG = 1
+DEBUG = 0
 VERBOSE = 0
 MAP_NAME = "test_map_buvoir.pgm"
 
@@ -37,6 +37,11 @@ class Planner :
 		self._map_width = 0
 		self._map_height = 0
 		self._posOffset = (0,0)
+		self.do_path = False
+
+		self._initPos = 0
+		self._targetPos = 0
+		self._realTarget = 0
 
 		rospy.init_node("Planner")
 
@@ -44,9 +49,11 @@ class Planner :
 		self.tf_listener = tf.TransformListener()
 		rospy.Subscriber("map",OccupancyGrid,self.map_callback)
 		#rospy.Subscriber("map_metadata",MapMetaData,self.meta_map_callback)
+		rospy.Subscriber("target_point",Point,self.target_callback)
+		rospy.Subscriber("clicked_point",PointStamped,self.clicked_point_callback)
 
 		#Publishers 
-		self.pub_path = rospy.Publisher("/path",Path,queue_size=5)
+		self.pub_path = rospy.Publisher("/path",Path,queue_size=1)
 
 
 	def map_callback(self,data):
@@ -66,6 +73,21 @@ class Planner :
 		self._map_width = data.map_width
 		self._map_height = data.map_height
 		
+	def target_callback(self,data):
+		print("target_point : "+str(data))
+		self.do_path = True
+
+		self._realTarget = (data.x, data.y, data.z)
+		print("\t realTarget : "+str(self._realTarget))
+
+
+	def clicked_point_callback(self,data):
+		print("clicked_point : "+str(data))
+		self.do_path = True
+
+		self._realTarget = (data.point.x, data.point.y, data.point.z)
+		print("\t realTarget : "+str(self._realTarget))
+
 
 	def get_target(self):
 		return 0
@@ -78,8 +100,8 @@ class Planner :
 		#load initial and target position
 		if not MANUAL:
 
-			cv2.imshow("img",img)
-			cv2.waitKey(1000)
+			#cv2.imshow("img",img)
+			#cv2.waitKey(1000)
 
 			#img = cv2.imread(MAP_NAME,1)
 			#img_inv= cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
@@ -88,6 +110,7 @@ class Planner :
 			rrt = RRT(img_inv)
 			rrt._initPos = initPos
 			rrt._targetPos = targetPos
+			print("target rrt="+str(rrt._targetPos))
 			rrt.start_connect(img)
 
 		#load Position from subscriber
@@ -130,11 +153,13 @@ class Planner :
 		return res
 
 	def convert_to_pixel(self,coord):
+		print("-CONVERT")
+		print("coord"+str(coord))
 		res = [0,0,0]
 
-		res[0] = ((coord[0] - self._map_origin.position.x) / self._map_resolution) - self._posOffset[0]
-		res[1] = ((-coord[1] - self._map_origin.position.y) / self._map_resolution) - self._posOffset[1]
-		res[2] = coord[2]
+		res[0] = int( ((coord[0] - self._map_origin.position.x) / self._map_resolution) - self._posOffset[0] )
+		res[1] = int( ((-coord[1] - self._map_origin.position.y) / self._map_resolution) - self._posOffset[1] )
+		res[2] = int( coord[2] ) 
 
 
 
@@ -148,6 +173,7 @@ class Planner :
 			print("No grid sorry.")
 			return
 
+		print("a")
 		if DEBUG : #Retrieve map from fixed location
 			m=cv.imread('maps/mymap.pgm',0) #Debug map
 		else : #Retrieve map from topic
@@ -157,12 +183,15 @@ class Planner :
 			ret,m = cv2.threshold(m,127,255,cv2.THRESH_BINARY_INV)
 			cv.imwrite("gridtest2.pgm",m)
 
+		print("b")
 		res = image_process(m)
 
 		self._posOffset = res[0]
 		self._map = res[1]
 		#cv.imshow("processed map",self._map)
 
+
+		print("c")
 		if (not self._map_width) or VERBOSE:
 			print("posOffset="+str(self._posOffset))
 			print("res="+str(self._map_resolution))
@@ -174,13 +203,11 @@ class Planner :
 	def run_planification(self):
 
 		#Init some parameters
-		self._initPos = (100,100)
-		self._targetPos = (250,140)
 		if self._map.size == 0 :
 			print("No map sorry.")
 			return
 
-		#Get info on robot position
+		#Compute initial position
 		try :
 			(trans,rot) = self.tf_listener.lookupTransform('/map','/base_link',rospy.Time(0))
 			print("Trans = "+str(trans))
@@ -193,6 +220,11 @@ class Planner :
 		except (tf.LookupException, tf.ConnectivityException, tf.ExtrapolationException):
 			print("Not valid tf lookupTransform")
 			pass
+
+		#Compute target position
+		res = self.convert_to_pixel(self._realTarget)
+		self._targetPos = (res[0],res[1])
+		print("TargetPos="+str(self._targetPos))
 
 		#Find a path in pixel
 		path = self.find_path(self._map,self._initPos,self._targetPos)
@@ -208,20 +240,20 @@ class Planner :
 		self.pub_path.publish(path_msg)
 
 
-	#def show_path(self, map, path):
-
-
-
-
 if __name__ == '__main__':
 	print("Planner_node main")
 
 	planner = Planner()
 
 	while not rospy.is_shutdown():
-		planner.run_map_process()
-		planner.run_planification()
-		time.sleep(1)
+		if planner.do_path :
+			print("do path")
+			planner.run_map_process()
+			print("map process finished")
+			planner.run_planification()
+			print("finish plan")
+			planner.do_path = False
+		time.sleep(0.5)
 
 
 

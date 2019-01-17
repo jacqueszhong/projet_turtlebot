@@ -15,7 +15,7 @@ from collections import defaultdict
 import math
 
 
-GUI = 1  # activate graphic interface
+GUI = 0  # activate graphic interface
 #CLICK_COUNTER = 0  # count number of right click on the interface
 DELTA_RADIUS = 10 #Allowed error to reach target
 MAX_DIST = 20 #Incremental distance

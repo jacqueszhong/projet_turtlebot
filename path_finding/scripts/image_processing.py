@@ -4,6 +4,8 @@ import cv2 as cv
 import numpy as np
 import time
 
+GUI = 0
+
 def crop_image(img,tol=1):
     # img is image data
     # tol  is tolerance
@@ -45,8 +47,6 @@ def image_process(img=None, GUI=0): #Open the map
 	# Mask of non-black pixels (assuming image has a single channel).
 	tol = 1
 	mask = img < tol
-
-	cv.waitKey()
 
 	# Coordinates of non-black pixels.
 	coords = np.argwhere(mask)
