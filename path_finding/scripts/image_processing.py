@@ -23,11 +23,10 @@ def grid_process(grid,width):
 	# 100 = wall
 
 	res = np.array(grid).reshape((width,-1))
-	print(res.shape)
-	res[res == -1] = 0
-	res = res * 2.55
-
 	res = np.array([res[i] for i in range(len(res)-1, -1, -1)])
+
+	res[res == -1] = 1 
+	res = res * 2.55 #unknown are white like obstacle
 
 	return res
 
@@ -46,7 +45,7 @@ def image_process(img=None, GUI=0): #Open the map
 
 	# Mask of non-black pixels (assuming image has a single channel).
 	tol = 1
-	mask = img < tol
+	mask = img > tol
 
 	# Coordinates of non-black pixels.
 	coords = np.argwhere(mask)
@@ -73,7 +72,6 @@ def image_process(img=None, GUI=0): #Open the map
 
 	#Save
 	cv.imwrite('test_map.pgm',erosion)
-
 	#Show
 	if GUI:
 		cv.namedWindow('image',cv.WINDOW_NORMAL)
@@ -84,4 +82,26 @@ def image_process(img=None, GUI=0): #Open the map
 
 
 if __name__ == '__main__':
-	image_process(GUI=1)
+	m=cv.imread('maps/polytech.pgm',0)
+
+	print(m)
+	cv.namedWindow('image',cv.WINDOW_NORMAL)
+	cv.imshow('image', m)
+	if cv.waitKey(): cv.destroyAllWindows()
+
+	m[m == 205] = -1 
+	m[m == 0] = 255
+	m[m == 255] = 0
+	m=grid_process(m,m.shape[1])
+
+	cv.namedWindow('image',cv.WINDOW_NORMAL)
+	cv.imshow('image', m)
+	if cv.waitKey(): cv.destroyAllWindows()
+	print(m)
+	(w0,y0),m=image_process(m)
+
+	cv.namedWindow('image',cv.WINDOW_NORMAL)
+	cv.imshow('image', m)
+	if cv.waitKey(): cv.destroyAllWindows()
+
+	#image_process(GUI=1)
