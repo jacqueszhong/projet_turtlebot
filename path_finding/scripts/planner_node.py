@@ -244,16 +244,16 @@ if __name__ == '__main__':
 	print("Planner_node main")
 
 	planner = Planner()
+	rate = rospy.Rate(2)
 
 	while not rospy.is_shutdown():
 		if planner.do_path :
-			print("do path")
 			planner.run_map_process()
-			print("map process finished")
+			print("map processed")
 			planner.run_planification()
-			print("finish plan")
+			print("path processed")
 			planner.do_path = False
-		time.sleep(0.5)
+		rate.sleep()
 
 
 
