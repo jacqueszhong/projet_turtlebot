@@ -179,12 +179,14 @@ class Planner :
 		else : #Retrieve map from topic
 			m =  grid_process(self._grid,self._map_width)
 
-
-			ret,m = cv2.threshold(m,127,255,cv2.THRESH_BINARY_INV)
+			ret,m = cv2.threshold(m,127,255,cv2.THRESH_BINARY)
+			
 			cv.imwrite("gridtest2.pgm",m)
 
 		print("b")
 		res = image_process(m)
+
+		
 
 		self._posOffset = res[0]
 		self._map = res[1]

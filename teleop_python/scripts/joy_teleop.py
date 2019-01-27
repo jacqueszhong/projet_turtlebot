@@ -11,15 +11,18 @@ twist = Twist()
 speed = 0.3
 speedw = 0.6
 a_push = False
-
+flag = 0
 
 #Callback pour le suscriber au node joystick
 def callback(data):
     global twist
     global a_push
+    global flag
 
-    twist.linear.x = speed*data.axes[1] 
-    twist.angular.z = speedw*data.axes[0] 
+    coef = 1+3*(1-data.axes[5])/2 
+
+    twist.linear.x = coef*speed*data.axes[1] 
+    twist.angular.z = coef*speedw*data.axes[0]
 
     #seuils activation
     if abs(data.axes[1]) <= 0.125:
@@ -33,15 +36,14 @@ def callback(data):
         a_push = True
     else :
         if a_push == True :
+            flag=1
             a_push = False
-            twist.linear.x = 0
-            twist.angular.z = 0
-            pub.publish(twist)
-        
+
 
 
 
 def talker():
+    global flag
     pub = rospy.Publisher(pub_name, Twist)
 
     # subscribed to joystick inputs on topic "joy"
@@ -56,6 +58,12 @@ def talker():
         if a_push :
             print("Joy control activated")
             pub.publish(twist)
+        elif flag :
+            flag=0
+            twist.linear.x = 0
+            twist.angular.z = 0
+            pub.publish(twist)
+
         rate.sleep()
 
 if __name__ == '__main__':

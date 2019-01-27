@@ -25,8 +25,10 @@ def grid_process(grid,width):
 	res = np.array(grid).reshape((width,-1))
 	res = np.array([res[i] for i in range(len(res)-1, -1, -1)])
 
-	res[res == -1] = 1 
+	res[res == -1] = 100 
 	res = res * 2.55 #unknown are white like obstacle
+
+	res = (255 - res)
 
 	return res
 
